@@ -434,7 +434,7 @@ p { margin: 0; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 56px;
-  align-items: start;
+  align-items: stretch;
 }
 .about-copy {
   background: var(--bg-card);
@@ -474,19 +474,42 @@ p { margin: 0; }
   padding-bottom: 16px;
   border-bottom: 2px solid var(--border-soft);
 }
+.skill-group {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 18px 20px;
+}
+.skill-group-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.skill-group-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  color: var(--on-dark);
+}
+.skill-group-icon.icon-product { background: var(--navy-700); }
+.skill-group-icon.icon-data { background: var(--camel-600); }
+.skill-group-icon.icon-tools { background: var(--navy-600); }
 .skill-group h4 {
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-  color: var(--navy-700);
-  margin: 0 0 12px;
+  font-size: 0.98rem;
+  color: var(--ink);
+  margin: 0;
 }
 .skill-pills { display: flex; flex-wrap: wrap; gap: 9px; }
 .skill-pills li {
   padding: 7px 14px;
-  background: var(--bg-card-alt);
+  background: var(--bg-card);
   border-radius: 999px;
   font-size: 0.85rem;
   color: var(--ink);
