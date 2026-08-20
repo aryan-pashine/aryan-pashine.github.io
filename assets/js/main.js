@@ -125,4 +125,60 @@
       el.textContent = (el.getAttribute('data-count') || '0') + (el.getAttribute('data-suffix') || '');
     });
   }
+
+  /* Copy-to-clipboard fallback for mailto:/tel: links
+     (clicking does nothing visible if the visitor has no default mail/phone app registered) */
+  var toastTimer = null;
+  function showToast(message) {
+    var toast = document.getElementById('copyToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'copyToast';
+      toast.className = 'copy-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('visible');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('visible');
+    }, 2200);
+  }
+
+  function legacyCopy(text) {
+    try {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      var ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      return ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  var copyableLinks = document.querySelectorAll('a[href^="mailto:"], a[href^="tel:"]');
+  copyableLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      var value = link.href.startsWith('mailto:')
+        ? decodeURIComponent(link.href.replace('mailto:', ''))
+        : link.href.replace('tel:', '');
+      var label = link.href.startsWith('mailto:') ? 'Email' : 'Phone number';
+
+      var useNativeClipboard = navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext;
+      var nativeAttempt = useNativeClipboard ? navigator.clipboard.writeText(value) : Promise.reject();
+
+      nativeAttempt.then(function () {
+        showToast(label + ' copied to clipboard: ' + value);
+      }).catch(function () {
+        var copied = legacyCopy(value);
+        showToast(copied ? (label + ' copied to clipboard: ' + value) : (label + ': ' + value));
+      });
+    });
+  });
 })();
