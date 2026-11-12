@@ -30,6 +30,10 @@
   --camel-600:      #2E8B8F;
   --camel-500:      #49A7AB;
 
+  /* Gold accent (tertiary, recognition highlights) */
+  --gold-600:       #B8862E;
+  --gold-500:       #D9A441;
+
   --border-subtle:  rgba(31, 42, 55, 0.10);
   --border-soft:    rgba(31, 42, 55, 0.06);
   --shadow-sm:      0 2px 10px rgba(31, 42, 55, 0.06);
@@ -552,6 +556,8 @@ p { margin: 0; }
   gap: 24px;
 }
 .project-card {
+  position: relative;
+  overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -587,10 +593,12 @@ p { margin: 0; }
 /* ---------- Achievements ---------- */
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
 .achievement-card {
+  position: relative;
+  overflow: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
@@ -613,6 +621,27 @@ p { margin: 0; }
 }
 .achievement-card h3 { font-size: 1.08rem; margin-bottom: 10px; }
 .achievement-card p { color: var(--ink-muted); font-size: 0.92rem; }
+
+/* ---------- Accent bars (projects + achievements) ---------- */
+.project-card::before,
+.achievement-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--navy-700);
+}
+.project-card.accent-teal::before,
+.achievement-card.accent-teal::before { background: var(--camel-600); }
+.achievement-card.accent-gold::before { background: var(--gold-600); }
+.achievement-card.accent-camel::before { background: var(--camel-500); }
+
+.achievement-card.accent-navy .achievement-icon { background: rgba(22, 50, 74, 0.10); }
+.achievement-card.accent-teal .achievement-icon { background: rgba(46, 139, 143, 0.12); }
+.achievement-card.accent-gold .achievement-icon { background: rgba(184, 134, 46, 0.14); }
+.achievement-card.accent-camel .achievement-icon { background: rgba(73, 167, 171, 0.14); }
 
 /* ---------- Contact ---------- */
 .section-contact { background: var(--bg-section-alt); }
@@ -749,6 +778,7 @@ a.contact-row:hover { background: var(--bg-card-alt); }
   .hero-stats { max-width: 380px; }
   .about-grid { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr 1fr; }
+  .achievements-grid { grid-template-columns: 1fr 1fr; }
 }
 
 @media (max-width: 760px) {
